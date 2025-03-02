@@ -1,6 +1,7 @@
 package com.example.readinglist;
 
 import com.example.readinglist.dao.DatabaseFactory;
+import com.example.readinglist.model.Book;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

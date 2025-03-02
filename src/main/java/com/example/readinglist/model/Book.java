@@ -1,4 +1,4 @@
-package com.example.readinglist;
+package com.example.readinglist.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.example.readinglist.dao;
 
-import com.example.readinglist.Book;
+import com.example.readinglist.model.Book;
 
 import java.util.ArrayList;
 import java.util.HashMap;

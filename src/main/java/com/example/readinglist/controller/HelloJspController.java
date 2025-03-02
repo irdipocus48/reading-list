@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(value = "/helloJsp")
+@WebServlet(value = "/jsp/hello")
 public class HelloJspController extends HttpServlet {
 
     @Override

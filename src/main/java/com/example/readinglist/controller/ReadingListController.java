@@ -2,10 +2,14 @@ package com.example.readinglist.controller;
 
 import com.example.readinglist.dao.DatabaseFactory;
 import com.example.readinglist.service.ReadingListService;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@WebServlet
 public class ReadingListController extends HttpServlet {
 
     private final ReadingListService readingListService = new ReadingListService();
@@ -16,6 +20,7 @@ public class ReadingListController extends HttpServlet {
         String action = request.getServletPath();
 
         try {
+            log.info("Operation: {}", action);
             switch (action) {
                 case "/new" -> readingListService.showNewForm(request, response);
                 case "/insert" -> readingListService.insertBook(request, response);
@@ -25,7 +30,7 @@ public class ReadingListController extends HttpServlet {
                 default -> readingListService.listBooks(request, response);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           log.error("Error during GET request: {}", e.getMessage());
         }
 
     }

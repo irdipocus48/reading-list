@@ -1,14 +1,16 @@
 package com.example.readinglist.service;
 
-import com.example.readinglist.Book;
+import com.example.readinglist.model.Book;
 import com.example.readinglist.dao.DatabaseDAO;
 import com.example.readinglist.dao.ReadingListDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+@Slf4j
 public class ReadingListService {
 
     private final ReadingListDAO readingListDAO = new DatabaseDAO();
@@ -21,7 +23,7 @@ public class ReadingListService {
             var dispatcher = request.getRequestDispatcher("reading-list.jsp");
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
-            e.printStackTrace();
+            log.error("Error during list: {}", e.getMessage());
         }
     }
 
@@ -30,7 +32,8 @@ public class ReadingListService {
             var dispatcher = request.getRequestDispatcher("form.jsp");
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
-            e.printStackTrace();
+            log.error("Error during show new form: {}", e.getMessage());
+
         }
     }
 
@@ -42,7 +45,8 @@ public class ReadingListService {
             request.setAttribute("book", existingBook);
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
-            e.printStackTrace();
+            log.error("Error during show edit form: {}", e.getMessage());
+
         }
     }
 
@@ -59,25 +63,12 @@ public class ReadingListService {
                 readingListDAO.add(newBook);
                 response.sendRedirect("list");
             } else {
-                try {
-                    var dispatcher = request.getRequestDispatcher("form-invalid.jsp");
-                    dispatcher.forward(request, response);
-                } catch (ServletException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (NumberFormatException e2) {
-            e2.printStackTrace();
-
-            try {
                 var dispatcher = request.getRequestDispatcher("form-invalid.jsp");
                 dispatcher.forward(request, response);
-            } catch (ServletException | IOException e) {
-                e.printStackTrace();
             }
+
+        } catch (IOException | NumberFormatException | ServletException e) {
+            log.error("Error during insert: {}", e.getMessage());
         }
     }
 
@@ -95,18 +86,13 @@ public class ReadingListService {
                 readingListDAO.update(newBook);
             }
             response.sendRedirect("list");
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        try {
             var id = Long.valueOf(request.getParameter("id"));
             var existingBook = readingListDAO.getById(id);
             var dispatcher = request.getRequestDispatcher("form-invalid.jsp");
             request.setAttribute("book", existingBook);
             dispatcher.forward(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NumberFormatException | ServletException e) {
+            log.error("Error during update: {}", e.getMessage());
         }
 
     }
@@ -116,7 +102,7 @@ public class ReadingListService {
             readingListDAO.remove(Long.valueOf(request.getParameter("id")));
             response.sendRedirect("list");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error during delete: {}", e.getMessage());
         }
     }
 

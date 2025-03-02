@@ -4,8 +4,11 @@ import com.example.readinglist.dao.DatabaseDAO;
 import com.example.readinglist.dao.DatabaseFactory;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
+@WebListener
 public class ReadingListListener implements ServletContextListener {
 
     @Override
@@ -14,13 +17,13 @@ public class ReadingListListener implements ServletContextListener {
         var readingListDAO = new DatabaseDAO();
         DatabaseFactory.establishConnection();
         context.setAttribute("readingListDAO", readingListDAO);
-        System.out.println("Context initialized.");
+        log.info("Context initialized.");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         DatabaseFactory.closeConnection();
-        System.out.println("Context destroyed.");
+        log.info("Context destroyed.");
     }
 
 }

@@ -1,11 +1,13 @@
 package com.example.readinglist.dao;
 
-import com.example.readinglist.Book;
+import com.example.readinglist.model.Book;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
 
     static {
@@ -24,7 +26,7 @@ public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
             preparedStatement.setString(6, book.getComment());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during adding: {}", e.getMessage());
         }
     }
 
@@ -49,7 +51,7 @@ public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
                 bookList.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during getting all: {}", e.getMessage());
         }
         return bookList;
     }
@@ -73,7 +75,7 @@ public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
                         .build();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during getting by id: {}", e.getMessage());
         }
 
         return book;
@@ -93,7 +95,7 @@ public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during update: {}", e.getMessage());
         }
     }
 
@@ -105,7 +107,7 @@ public class DatabaseDAO extends DatabaseFactory implements ReadingListDAO {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during remove: {}", e.getMessage());
         }
     }
 

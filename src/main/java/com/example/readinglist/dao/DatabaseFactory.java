@@ -1,11 +1,13 @@
 package com.example.readinglist.dao;
 
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
+@Slf4j
 public class DatabaseFactory {
 
     private static final String DB_DRIVER = "org.postgresql.Driver";
@@ -22,12 +24,12 @@ public class DatabaseFactory {
                 Class.forName(DB_DRIVER);
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 if (!connection.isClosed()) {
-                    System.out.println("Connection established.");
+                    log.info("DB connection established.");
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("Connection error.");
-            e.printStackTrace();
+//            System.err.println("Connection error.");
+            log.error("Error during DB connection establishing: {}", e.getMessage());
         }
     }
 
@@ -38,10 +40,11 @@ public class DatabaseFactory {
                 connection.close();
             }
             if (connection.isClosed()) {
-                System.out.println("Connection destroyed.!");
+                log.info("DB connection closed.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error during DB connection closing: {}", e.getMessage());
+
         }
     }
 
